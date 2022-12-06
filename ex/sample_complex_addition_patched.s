@@ -27,7 +27,7 @@ main:
 	sw	a5,-28(s0)
 	ld	a4,-24(s0)
 	ld	a5,-32(s0)
-	.word   0xf7078b
+	.word 0xf7078b
 	/* addc a5, a5, a4 */
 	sd	a5,-40(s0)
 	lw	a1,-24(s0)

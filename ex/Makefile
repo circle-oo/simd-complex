@@ -13,11 +13,23 @@ e1.s: e1.c
 
 e1-patched: e1-patched.s
 	$(CC) -march=rv64imafd e1-patched.s -o e1-patched
+	
+sample_complex_addition-assm:
+	riscv64-unknown-elf-gcc -march=rv64imafd sample_complex_addition.c -o sample_complex_addition.s -S
+
+sample_complex_addition: sample_complex_addition.s
+	riscv64-unknown-elf-gcc -march=rv64imafd sample_complex_addition.s -o sample_complex_addition
+
+sample_complex_addition-objdump: sample_complex_addition
+	riscv64-unknown-elf-objdump -d sample_complex_addition > sample_complex_addition.d
 
 sample-patched:
 	riscv64-unknown-elf-gcc -march=rv64imafd sample_complex_addition_patched.s -o sample_complex_addition_patched
 
-run-sample-patched: sample_complex_addition_patched.s
+run-sample: sample_complex_addition 
+	$(SPIKE) -l --log=victim.log $(PK) sample_complex_addition
+	
+run-sample-patched: sample_complex_addition_patched.s sample-patched
 	$(SPIKE) -l --log=victim.log $(PK) sample_complex_addition_patched
 
 dump-sample-patched: sample_complex_addition_patched
